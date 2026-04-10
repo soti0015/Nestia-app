@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Νηστεία — App Use Case | Aaron Sotiropoulos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green:   #3DBE7A;
+    --navy:    #1A1A2E;
+    --black:   #111111;
+    --gray:    #555555;
+    --lgray:   #888888;
+    --border:  #E0E0E0;
+    --bg:      #FFFFFF;
+    --offwhite:#F7F7F5;
+    --serif:   'DM Serif Display', Georgia, serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+    --max:     720px;
+    --wide:    1000px;
+    color-scheme: light only;
+  }
+
+  html { scroll-behavior: smooth; color-scheme: light only; }
+
+  body {
+    font-family: var(--sans);
+    background: #FFFFFF !important;
+    color: #111111 !important;
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Nav ──────────────────────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 60px;
+    background: rgba(255,255,255,0.96) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #E0E0E0;
+  }
+  .nav-brand {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    color: #111111 !important;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 14px; font-weight: 500; color: #666666 !important;
+    text-decoration: none; transition: color .2s;
+  }
+  .nav-links a:hover { color: #111111 !important; }
+
+  /* ── Layout ───────────────────────────────────────────────────────────── */
+  .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .container-wide { max-width: var(--wide); margin: 0 auto; padding: 0 24px; }
+
+  section { padding: 80px 0; background: #FFFFFF !important; }
+  section + section { border-top: 1px solid #E0E0E0; }
+
+  /* ── Hero ─────────────────────────────────────────────────────────────── */
+  .hero {
+    padding-top: 140px;
+    padding-bottom: 80px;
+    border-bottom: 1px solid #E0E0E0;
+    background: #FFFFFF !important;
+  }
+  .hero-label {
+    font-size: 13px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: #3DBE7A !important;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    color: #111111 !important;
+    margin-bottom: 24px;
+  }
+  .hero-sub {
+    font-size: 19px; color: #555555 !important; max-width: 560px; line-height: 1.65;
+    margin-bottom: 36px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tag {
+    font-size: 13px; font-weight: 500; padding: 6px 14px;
+    border-radius: 100px; border: 1.5px solid #E0E0E0;
+    color: #666666 !important; background: #FFFFFF !important;
+  }
+
+  /* ── Meta grid ────────────────────────────────────────────────────────── */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0;
+    border-top: 1px solid #E0E0E0;
+    border-left: 1px solid #E0E0E0;
+    margin-top: 64px;
+    background: #FFFFFF !important;
+  }
+  .meta-item {
+    padding: 28px 24px;
+    border-right: 1px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
+    background: #FFFFFF !important;
+  }
+  .meta-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #888888 !important; margin-bottom: 10px; }
+  .meta-value { font-size: 15px; font-weight: 500; color: #111111 !important; line-height: 1.5; }
+
+  /* ── Section headings ─────────────────────────────────────────────────── */
+  .section-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: #3DBE7A !important; margin-bottom: 16px;
+  }
+  h2.section-title {
+    font-family: var(--serif);
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.1; letter-spacing: -.02em;
+    color: #111111 !important; margin-bottom: 28px;
+  }
+  h3.sub-title {
+    font-family: var(--serif);
+    font-size: 26px; line-height: 1.25;
+    color: #111111 !important; margin-bottom: 14px;
+  }
+  p.body-text { color: #555555 !important; margin-bottom: 20px; max-width: 600px; }
+  p.body-text:last-child { margin-bottom: 0; }
+
+  /* ── IN SHORT callout ─────────────────────────────────────────────────── */
+  .callout {
+    border-left: 3px solid #3DBE7A;
+    padding: 28px 32px;
+    margin: 60px 0;
+    background: #F7F7F5 !important;
+    border-radius: 0 12px 12px 0;
+  }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: #3DBE7A !important; margin-bottom: 16px;
+  }
+  .callout blockquote {
+    font-family: var(--serif);
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.3; color: #111111 !important;
+    font-style: italic; letter-spacing: -.01em;
+  }
+
+  /* ── Two-col ──────────────────────────────────────────────────────────── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* ── Feature cards ────────────────────────────────────────────────────── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: #E0E0E0;
+    border: 1px solid #E0E0E0;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  .feature-card { background: #FFFFFF !important; padding: 32px 28px; }
+  .feature-num { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #3DBE7A !important; margin-bottom: 12px; }
+  .feature-card h4 { font-size: 17px; font-weight: 600; color: #111111 !important; margin-bottom: 10px; }
+  .feature-card p { font-size: 15px; color: #555555 !important; line-height: 1.6; }
+
+  /* ── Tab breakdown ────────────────────────────────────────────────────── */
+  .tab-block { display: grid; grid-template-columns: 80px 1fr; gap: 28px; padding: 36px 0; border-bottom: 1px solid #E0E0E0; align-items: start; }
+  .tab-block:last-child { border-bottom: none; }
+  .tab-icon { width: 56px; height: 56px; border-radius: 16px; background: #F7F7F5 !important; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .tab-block h4 { font-size: 18px; font-weight: 600; color: #111111 !important; margin-bottom: 6px; }
+  .tab-block .tab-sub { font-size: 13px; font-weight: 600; color: #3DBE7A !important; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+  .tab-block p { font-size: 15px; color: #555555 !important; line-height: 1.65; }
+
+  /* ── Bullet list ──────────────────────────────────────────────────────── */
+  ul.styled { list-style: none; margin-top: 20px; }
+  ul.styled li { padding: 12px 0; border-bottom: 1px solid #E0E0E0; font-size: 15px; color: #555555 !important; display: flex; gap: 12px; align-items: flex-start; }
+  ul.styled li:last-child { border-bottom: none; }
+  ul.styled li::before { content: "→"; color: #3DBE7A !important; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── User flow ────────────────────────────────────────────────────────── */
+  .flow-steps { margin-top: 28px; }
+  .flow-step { display: flex; gap: 20px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid #E0E0E0; }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num { width: 32px; height: 32px; border-radius: 50%; background: #1A1A2E !important; color: #FFFFFF !important; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .flow-step p { font-size: 15px; color: #555555 !important; line-height: 1.6; padding-top: 5px; }
+  .flow-step p strong { color: #111111 !important; }
+
+  /* ── Tech stack table ─────────────────────────────────────────────────── */
+  .stack-table { width: 100%; border-collapse: collapse; margin-top: 28px; }
+  .stack-table tr { border-bottom: 1px solid #E0E0E0; }
+  .stack-table tr:last-child { border-bottom: none; }
+  .stack-table td { padding: 16px 0; font-size: 15px; vertical-align: top; }
+  .stack-table td:first-child { width: 140px; font-weight: 600; color: #111111 !important; padding-right: 24px; }
+  .stack-table td:last-child { color: #555555 !important; }
+
+  /* ── Principles ───────────────────────────────────────────────────────── */
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-top: 40px; }
+  .principle h4 { font-size: 16px; font-weight: 600; color: #111111 !important; margin-bottom: 8px; }
+  .principle p { font-size: 14px; color: #555555 !important; line-height: 1.65; }
+  .principle-dot { width: 8px; height: 8px; border-radius: 50%; background: #3DBE7A !important; margin-bottom: 16px; }
+
+  /* ── App preview mock ─────────────────────────────────────────────────── */
+  .app-mock {
+    background: linear-gradient(135deg, #F0FAF5 0%, #E8F4FF 100%);
+    border-radius: 24px;
+    padding: 60px 40px;
+    text-align: center;
+    margin: 48px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .app-mock::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(61,190,122,.12) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(26,26,46,.06) 0%, transparent 60%);
+  }
+  .phone-shell {
+    display: inline-block;
+    background: #1A1A2E !important;
+    border-radius: 44px;
+    padding: 14px;
+    box-shadow: 0 40px 80px rgba(0,0,0,.25), 0 8px 16px rgba(0,0,0,.12);
+    position: relative;
+    z-index: 1;
+  }
+  .phone-screen {
+    width: 240px;
+    background: #F4F6F8 !important;
+    border-radius: 32px;
+    overflow: hidden;
+    font-family: var(--sans);
+  }
+  .phone-status {
+    background: #FFFFFF !important; height: 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; font-size: 12px; font-weight: 600; color: #111111 !important;
+  }
+  .phone-content { padding: 16px; background: #F4F6F8 !important; }
+  .pc-label { font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #AAAAAA !important; margin-bottom: 2px; }
+  .pc-title { font-size: 18px; font-weight: 800; color: #1A1A2E !important; margin-bottom: 12px; }
+  .pc-day-strip { display: flex; gap: 6px; overflow: hidden; margin-bottom: 12px; }
+  .pc-day-pill { font-size: 9px; font-weight: 700; padding: 5px 10px; border-radius: 50px; white-space: nowrap; flex-shrink: 0; }
+  .pc-day-pill.active { background: #1A1A2E !important; color: #FFFFFF !important; }
+  .pc-day-pill.inactive { background: #FFFFFF !important; color: #AAAAAA !important; border: 1px solid #E8E8E8; }
+  .pc-card { background: #FFFFFF !important; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+  .pc-card-title { font-size: 13px; font-weight: 800; color: #1A1A2E !important; margin-bottom: 4px; }
+  .pc-card-sub { font-size: 10px; color: #AAAAAA !important; margin-bottom: 10px; }
+  .pc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .pc-rule { padding: 8px 4px; border-radius: 8px; text-align: center; }
+  .pc-rule.ok { background: #F0FAF5; }
+  .pc-rule.no { background: #FEF2F2; }
+  .pc-rule-icon { font-size: 14px; }
+  .pc-rule-label { font-size: 8px; color: #AAA; margin: 2px 0 1px; font-weight: 600; }
+  .pc-rule-status { font-size: 9px; font-weight: 800; }
+  .pc-rule.ok .pc-rule-status { color: #3DBE7A; }
+  .pc-rule.no .pc-rule-status { color: #E85454; }
+  .pc-scan-btn {
+    background: #3DBE7A; color: white; border-radius: 10px;
+    padding: 10px; font-size: 11px; font-weight: 800; text-align: center; margin-top: 10px;
+  }
+  .phone-nav {
+    background: white; padding: 10px 0 4px;
+    display: flex; border-top: 1px solid #F0F0F0;
+  }
+  .nav-tab { flex: 1; text-align: center; font-size: 8px; font-weight: 700; color: #C0C0C0; }
+  .nav-tab.active { color: #3DBE7A; }
+  .nav-tab-icon { font-size: 14px; display: block; margin-bottom: 2px; }
+
+  /* ── Footer ───────────────────────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid #E0E0E0;
+    padding: 60px 0;
+  }
+  footer .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-brand { font-weight: 600; font-size: 15px; color: #111111; }
+  .footer-credit { font-size: 14px; color: #888888; }
+
+  /* ── Scroll fade-in ───────────────────────────────────────────────────── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── Responsive nav ───────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section { padding: 56px 0; }
+    .hero { padding-top: 100px; }
+  }
+  * { -webkit-text-fill-color: unset; }
+  @media (prefers-color-scheme: dark) {
+    html, body, section, nav, footer, .feature-card, .tab-icon, .meta-item, .callout { background-color: #FFFFFF !important; color: #111111 !important; }
+    p, h1, h2, h3, h4, span, li, td, div { color: inherit; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ─────────────────────────────────────────────────────────────────── -->
+<nav>
+  <a href="#" class="nav-brand">Aaron Sotiropoulos</a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#users">Users</a></li>
+    <li><a href="#tech">Tech</a></li>
+    <li><a href="#vision">Vision</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-label reveal">App Use Case</div>
+    <h1 class="reveal">Νηστεία</h1>
+    <p class="hero-sub reveal">A mobile app that helps Orthodox Christians figure out what they can eat during Holy Week. Scan products, browse recipes, and get clear answers without needing to already know everything.</p>
+    <div class="tags reveal">
+      <span class="tag">☦ Orthodox Fasting</span>
+      <span class="tag">📱 Mobile App</span>
+      <span class="tag">🇦🇺 Australian Context</span>
+      <span class="tag">🛒 Barcode Scanning</span>
+      <span class="tag">🇬🇷 English / Ελληνικά</span>
+      <span class="tag">Personal Project</span>
+    </div>
+
+    <div class="meta-grid reveal">
+      <div class="meta-item">
+        <div class="meta-label">Prepared by</div>
+        <div class="meta-value">Aaron Sotiropoulos</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Status</div>
+        <div class="meta-value">Concept · Pre-development</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Platform</div>
+        <div class="meta-value">iOS · Android · Web PWA</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Stack</div>
+        <div class="meta-value">React Native · Next.js · Prisma</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Year</div>
+        <div class="meta-value">2025</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── App Preview ──────────────────────────────────────────────────────────── -->
+<section style="padding: 80px 0; background: #F7F7F5; border-bottom: 1px solid #E0E0E0;">
+  <div class="container-wide">
+    <div class="app-mock reveal">
+      <div class="phone-shell">
+        <div class="phone-screen">
+          <div class="phone-status">
+            <span>9:41</span>
+            <span>●●●</span>
+          </div>
+          <div class="phone-content">
+            <div class="pc-label">Greek Orthodox</div>
+            <div class="pc-title">Νηστεία ☦</div>
+            <div class="pc-day-strip">
+              <div class="pc-day-pill inactive">🌴 Palm</div>
+              <div class="pc-day-pill inactive">✝ Mon</div>
+              <div class="pc-day-pill active">🕯 Fri</div>
+              <div class="pc-day-pill inactive">🥚 Sat</div>
+            </div>
+            <div class="pc-card">
+              <div class="pc-card-title">Good Friday</div>
+              <div class="pc-card-sub">Apr 18 · Strictest fast of the year</div>
+              <div class="pc-grid">
+                <div class="pc-rule no"><div class="pc-rule-icon">🥩</div><div class="pc-rule-label">Meat</div><div class="pc-rule-status">✗ No</div></div>
+                <div class="pc-rule no"><div class="pc-rule-icon">🧀</div><div class="pc-rule-label">Dairy</div><div class="pc-rule-status">✗ No</div></div>
+                <div class="pc-rule no"><div class="pc-rule-icon">🐟</div><div class="pc-rule-label">Fish</div><div class="pc-rule-status">✗ No</div></div>
+                <div class="pc-rule no"><div class="pc-rule-icon">🫒</div><div class="pc-rule-label">Oil</div><div class="pc-rule-status">✗ No</div></div>
+                <div class="pc-rule no"><div class="pc-rule-icon">🍷</div><div class="pc-rule-label">Wine</div><div class="pc-rule-status">✗ No</div></div>
+                <div class="pc-rule ok"><div class="pc-rule-icon">🫘</div><div class="pc-rule-label">Beans</div><div class="pc-rule-status">✓ OK</div></div>
+              </div>
+              <div class="pc-scan-btn">📷 Scan a Product</div>
+            </div>
+          </div>
+          <div class="phone-nav">
+            <div class="nav-tab active"><span class="nav-tab-icon">☀️</span>Today</div>
+            <div class="nav-tab"><span class="nav-tab-icon">📷</span>Scan</div>
+            <div class="nav-tab"><span class="nav-tab-icon">🍽️</span>Recipes</div>
+            <div class="nav-tab"><span class="nav-tab-icon">📖</span>Guide</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Problem ──────────────────────────────────────────────────────────────── -->
+<section id="problem">
+  <div class="container">
+    <div class="section-eyebrow reveal">The Problem</div>
+    <h2 class="section-title reveal">Orthodox fasting has no good digital guide</h2>
+    <p class="body-text reveal">Greek Orthodox fasting during Holy Week isn't one simple rule. It changes every day. Fish is allowed on Palm Sunday but not Good Friday. Oil and wine are fine on Holy Thursday but off the table on Wednesday. People who've grown up with this know it by heart. But two groups are really struggling.</p>
+
+    <div class="two-col" style="margin-top: 48px;">
+      <div class="reveal">
+        <h3 class="sub-title">Older community members</h3>
+        <p class="body-text">A lot of older parishioners learned the rules from their parents. But when that gets lost through distance, diaspora, or just life getting in the way, there's nowhere simple to turn. No app they can actually use comfortably.</p>
+      </div>
+      <div class="reveal">
+        <h3 class="sub-title">Younger Greeks reconnecting</h3>
+        <p class="body-text">More and more young Greek Australians want to participate in Holy Week but have no idea where to start. They didn't grow up with it, feel embarrassed asking, and end up not fasting at all.</p>
+      </div>
+    </div>
+
+    <div class="callout reveal">
+      <div class="callout-label">In short</div>
+      <blockquote>There's no app built specifically for Orthodox fasting. Especially not one that works for someone who is new to it.</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ── Solution ─────────────────────────────────────────────────────────────── -->
+<section id="solution">
+  <div class="container">
+    <div class="section-eyebrow reveal">The Solution</div>
+    <h2 class="section-title reveal">Νηστεία: five tabs, one purpose each</h2>
+    <p class="body-text reveal">Nisteia is a clean, simple mobile app. The whole idea is that you open it and immediately know what to do. White cards, big readable text, a green scan button. No clutter, no learning curve.</p>
+
+    <div style="margin-top: 48px;">
+      <div class="tab-block reveal">
+        <div class="tab-icon">☀️</div>
+        <div>
+          <div class="tab-sub">Tab 1</div>
+          <h4>Today</h4>
+          <p>You see the fasting rules for the day straight away. A strip of Holy Week days across the top so you can tap between them. A simple grid showing what's allowed and what's not. Meat, dairy, fish, oil, wine. Green tick or red cross. Plus a short plain-English note explaining what the day actually means.</p>
+        </div>
+      </div>
+      <div class="tab-block reveal">
+        <div class="tab-icon">📷</div>
+        <div>
+          <div class="tab-sub">Tab 2</div>
+          <h4>Scan</h4>
+          <p>Scan any product barcode and find out instantly if you can eat it today. It pulls from the Open Food Facts database, which is free and doesn't need an API key. The result is big and obvious: "You can eat this!" or "Avoid this today", with a simple reason if it's not allowed.</p>
+        </div>
+      </div>
+      <div class="tab-block reveal">
+        <div class="tab-icon">🍽️</div>
+        <div>
+          <div class="tab-sub">Tab 3</div>
+          <h4>Recipes</h4>
+          <p>A collection of traditional Greek fasting recipes. Fasolada, Fakes, Taramasalata, Lagana, Spanakorizo, Halva and more. Each one has the Greek name, how long it takes, difficulty, and numbered steps. The recipes automatically filter to only show what you're allowed to make that day.</p>
+        </div>
+      </div>
+      <div class="tab-block reveal">
+        <div class="tab-icon">📖</div>
+        <div>
+          <div class="tab-sub">Tab 4</div>
+          <h4>Guide</h4>
+          <p>This is for anyone who's never done this before. What is fasting? What can I eat? Do I have to be perfect? Why is Good Friday the hardest day? Simple FAQ cards you tap to open. Warm and straightforward, no assumptions about what you already know.</p>
+        </div>
+      </div>
+      <div class="tab-block reveal">
+        <div class="tab-icon">✨</div>
+        <div>
+          <div class="tab-sub">Tab 5</div>
+          <h4>For You</h4>
+          <p>You pick the ingredients and foods you enjoy and the app builds personalised meal and snack ideas around them. It checks what's allowed on today's fasting rules first, then uses AI to put something together that actually suits you. Not just a list of random recipes — suggestions that feel like they were made for you. Great for people who know what they like but have no idea how to make it work during Holy Week.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Users ─────────────────────────────────────────────────────────────────── -->
+<section id="users">
+  <div class="container">
+    <div class="section-eyebrow reveal">Who It's For</div>
+    <h2 class="section-title reveal">Designed for two very different people</h2>
+
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="reveal">
+        <h3 class="sub-title">The young reconnector</h3>
+        <p class="body-text">20s, Greek-Australian, curious about Orthodoxy. Has never properly fasted before. Wants to try Holy Week fasting but has no idea where to start and feels embarrassed to ask family. Needs clear rules, simple language, and recipe ideas they can actually cook.</p>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-num">1</div>
+            <p>Opens the app. Sees the <strong>Good Friday</strong> rules. Big grid, almost everything red except vegetables and legumes.</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">2</div>
+            <p>Taps the Guide tab and reads the FAQ: <strong>"Do I have to be perfect?"</strong> The answer is no. Do what you can.</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">3</div>
+            <p>Scans the yoghurt in the fridge. App says <strong>"Avoid this today"</strong> and shows the reason: contains dairy.</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">4</div>
+            <p>Opens Recipes and follows the steps for <strong>Lentil Soup (Fakes)</strong>. Makes dinner.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <h3 class="sub-title">The experienced parish elder</h3>
+        <p class="body-text">60s or 70s, devout, has fasted their whole life. Knows the tradition well but wants something to double-check a product at the supermarket. Needs big text, simple navigation, a clear yes or no without any fuss, and the option to use the app entirely in Greek.</p>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-num">1</div>
+            <p>Opens the app on <strong>Holy Thursday</strong> morning. Sees the tip that oil and wine are allowed today.</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">2</div>
+            <p>Standing in the supermarket. Taps Scan and enters the barcode on a packet of crackers.</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">3</div>
+            <p><strong>"You can eat this!"</strong> Big green tick. Shows their grandchild standing next to them.</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">4</div>
+            <p>Shares the Recipes tab with the grandkids. Passes the tradition on in a way that actually sticks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Design ─────────────────────────────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow reveal">Design Principles</div>
+    <h2 class="section-title reveal">Built to be understood by anyone</h2>
+
+    <div class="principle-grid">
+      <div class="principle reveal">
+        <div class="principle-dot"></div>
+        <h4>Simplicity first</h4>
+        <p>Every screen has one job. No clutter, no hidden menus. You should know what to do within a few seconds of opening it.</p>
+      </div>
+      <div class="principle reveal">
+        <div class="principle-dot"></div>
+        <h4>Plain language always</h4>
+        <p>No church jargon, no assumptions. If a rule exists, it's explained in plain English. What it means for your actual meal.</p>
+      </div>
+      <div class="principle reveal">
+        <div class="principle-dot"></div>
+        <h4>Inclusive of all ages</h4>
+        <p>Big tap targets, generous text sizes, high contrast. Works just as well for a 70-year-old yiayia as it does for a 19-year-old student.</p>
+      </div>
+      <div class="principle reveal">
+        <div class="principle-dot"></div>
+        <h4>Encouraging, not guilt-based</h4>
+        <p>The Guide makes it clear: you don't have to be perfect. The app meets you where you're at and supports whatever effort you're making.</p>
+      </div>
+      <div class="principle reveal">
+        <div class="principle-dot"></div>
+        <h4>Clean and scannable</h4>
+        <p>White cards, green accents, big verdicts. The design makes answers feel immediate. You should never have to hunt for information.</p>
+      </div>
+      <div class="principle reveal">
+        <div class="principle-dot"></div>
+        <h4>Culturally grounded</h4>
+        <p>Greek names sit alongside English. The cross, the tradition, the recipes — it all feels genuinely Orthodox, not generic.</p>
+      </div>
+    </div>
+
+    <div class="callout reveal">
+      <div class="callout-label">In short</div>
+      <blockquote>Scan it, check it, cook it. No background knowledge required.</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ──────────────────────────────────────────────────────────────── -->
+<section style="background: #F7F7F5;">
+  <div class="container">
+    <div class="section-eyebrow reveal">Core Features</div>
+    <h2 class="section-title reveal">What the MVP includes</h2>
+
+    <div class="feature-grid reveal">
+      <div class="feature-card">
+        <div class="feature-num">Feature 01</div>
+        <h4>Daily fasting rules</h4>
+        <p>Rules for every day of Holy Week. Meat, dairy, fish, shellfish, oil and wine. Green tick or red cross. Plus a short note explaining what the day means.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">Feature 02</div>
+        <h4>Barcode scanner</h4>
+        <p>Scan any product and get an instant yes or no. Powered by the Open Food Facts database, free to use.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">Feature 03</div>
+        <h4>Recipe library</h4>
+        <p>Traditional Greek fasting recipes with step-by-step instructions. Only shows what's allowed for the day you've selected.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">Feature 04</div>
+        <h4>Beginner's guide</h4>
+        <p>A simple FAQ for first-time fasters. What is fasting? What can I eat? Why is Good Friday the hardest? All answered clearly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">Feature 05</div>
+        <h4>Strictness toggle</h4>
+        <p>Not everyone fasts the same way and that's okay. You can choose between lenient, standard and strict to match how you observe.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">Feature 06</div>
+        <h4>Score ring</h4>
+        <p>Each scanned product gets a compliance score from 0 to 100. A quick visual read so you know exactly where it sits.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">Feature 07</div>
+        <h4>Greek language support</h4>
+        <p>A simple toggle to switch the entire app between English and Greek. Every screen, every label, every fasting verdict switches over. Built so older community members who are more comfortable in Greek can use the app fully without any friction.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">Feature 08</div>
+        <h4>Personalised meal suggestions</h4>
+        <p>You tell the app what foods you enjoy and it puts together fasting-friendly meal and snack ideas built around your preferences. It takes into account what's actually allowed on that day, so every suggestion is one you can eat right now. Powered by AI so the results feel personal, not generic.</p>
+      </div>
+    </div>
+
+    <p style="margin-top: 32px; font-size: 14px; color: #888888; font-weight: 500;">Post-MVP ideas: push notifications, offline mode, community recipes, year-round fasting calendar.</p>
+  </div>
+</section>
+
+<!-- ── Tech ──────────────────────────────────────────────────────────────────── -->
+<section id="tech">
+  <div class="container">
+    <div class="section-eyebrow reveal">Technical Approach</div>
+    <h2 class="section-title reveal">Built by Aaron, assisted by AI</h2>
+    <p class="body-text reveal">Aaron is building this himself. He'll set up the project, create the files and manage the codebase end to end. AI will come in to help with specific logic, API integration and tricky styling bits, but the goal is to own every decision.</p>
+
+    <table class="stack-table reveal">
+      <tr><td>Frontend</td><td>React Native for mobile or Next.js as a PWA. Decision made at project start.</td></tr>
+      <tr><td>Styling</td><td>Tailwind CSS. Utility-first and consistent with existing projects.</td></tr>
+      <tr><td>Database</td><td>PostgreSQL via Prisma ORM. For recipes, user data and scan history.</td></tr>
+      <tr><td>Barcode API</td><td>Open Food Facts. Open source, free, no API key needed, community maintained.</td></tr>
+      <tr><td>Localisation</td><td>i18next. The standard library for multilingual React apps. English and Greek JSON files, language toggled by the user in settings.</td></tr>
+      <tr><td>Meal AI</td><td>Claude API (Anthropic). Takes the user's food preferences and today's fasting rules, returns personalised meal and snack suggestions on the fly.</td></tr>
+      <tr><td>Deployment</td><td>Vercel for web, Expo for mobile.</td></tr>
+      <tr><td>AI Assist</td><td>Claude by Anthropic. Code suggestions, debugging and content help during the build.</td></tr>
+      <tr><td>Auth</td><td>Clerk or NextAuth.js. Post-MVP, for user accounts and saved recipes.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ── Vision ────────────────────────────────────────────────────────────────── -->
+<section id="vision">
+  <div class="container">
+    <div class="section-eyebrow reveal">Future Vision</div>
+    <h2 class="section-title reveal">Starting with Holy Week, growing with the calendar</h2>
+    <p class="body-text reveal">The plan is to start with Holy Week and grow from there. The Greek Orthodox calendar has fasting periods throughout the whole year and the same core features work for all of them. Barcode scanning, daily rules, recipes. It all applies.</p>
+
+    <ul class="styled reveal">
+      <li>Expand to cover the Apostles' Fast, Dormition Fast, Nativity Fast and the regular Wednesday and Friday fasting</li>
+      <li>Full Greek language support so older first-generation community members can use the app entirely in Greek, reviewed by a native speaker for accuracy</li>
+      <li>A community recipe library where people can submit their own family recipes</li>
+      <li>A personal fasting journal to track your observance across the year</li>
+      <li>Push notifications at the start of each fasting period</li>
+      <li>Potential partnerships with Greek Orthodox parishes and community groups in Australia</li>
+      <li>A lightweight web version for people on desktop or tablet</li>
+    </ul>
+
+    <div class="callout reveal">
+      <div class="callout-label">Long-term goal</div>
+      <blockquote>To make Νηστεία the go-to resource for Orthodox fasting in the Australian Greek community, and eventually beyond.</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <span class="footer-brand">☦ Νηστεία · Orthodox Fasting Companion</span>
+    <span class="footer-credit">Prepared by Aaron Sotiropoulos · 2025 · Concept document</span>
+  </div>
+</footer>
+
+<!-- ── Scroll reveal ──────────────────────────────────────────────────────────── -->
+<script>
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
