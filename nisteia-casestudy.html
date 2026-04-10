@@ -221,17 +221,21 @@
   .app-mock {
     background: linear-gradient(135deg, #F0FAF5 0%, #E8F4FF 100%);
     border-radius: 24px;
-    padding: 60px 40px;
+    padding: 48px 20px;
     text-align: center;
-    margin: 48px 0;
+    margin: 48px auto;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .app-mock::before {
     content: '';
-    position: absolute; inset: 0;
+    position: absolute; inset: 0; border-radius: 24px;
     background: radial-gradient(circle at 30% 50%, rgba(61,190,122,.12) 0%, transparent 60%),
                 radial-gradient(circle at 70% 50%, rgba(26,26,46,.06) 0%, transparent 60%);
+    pointer-events: none;
   }
   .phone-shell {
     display: inline-block;
@@ -241,6 +245,7 @@
     box-shadow: 0 40px 80px rgba(0,0,0,.25), 0 8px 16px rgba(0,0,0,.12);
     position: relative;
     z-index: 1;
+    transform-origin: top center;
   }
   .phone-screen {
     width: 300px;
@@ -250,6 +255,13 @@
     overflow: hidden;
     font-family: var(--sans);
     position: relative;
+  }
+  @media (max-width: 480px) {
+    .app-mock { padding: 32px 12px; border-radius: 16px; }
+    .phone-shell { transform: scale(0.82); margin: -40px auto; }
+  }
+  @media (max-width: 380px) {
+    .phone-shell { transform: scale(0.72); margin: -60px auto; }
   }
   .phone-status {
     background: #FFFFFF !important; height: 44px;
@@ -373,12 +385,12 @@
 </div>
 
 <!-- ── App Preview ──────────────────────────────────────────────────────────── -->
-<section style="padding: 80px 0; background: #F7F7F5; border-bottom: 1px solid #E0E0E0;">
-  <div class="container-wide">
+<section style="padding: 80px 0; background: #F7F7F5; border-bottom: 1px solid #E0E0E0; overflow: hidden;">
+  <div class="container">
     <div style="text-align:center; margin-bottom: 32px;">
       <p style="margin:0 0 8px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:#3DBE7A;">Live Prototype</p>
-      <h2 style="margin:0; font-family:'DM Serif Display',Georgia,serif; font-size:32px; color:#111111;">Try it yourself</h2>
-      <p style="margin:8px 0 0; font-size:15px; color:#666666;">Tap through the app below. This is the real thing.</p>
+      <h2 style="margin:0; font-family:'DM Serif Display',Georgia,serif; font-size:32px; color:#111111 !important;">Try it yourself</h2>
+      <p style="margin:8px 0 0; font-size:15px; color:#666666 !important;">Tap through the app below. This is the real thing.</p>
     </div>
     <div class="app-mock reveal">
       <div class="phone-shell">
