@@ -243,11 +243,13 @@
     z-index: 1;
   }
   .phone-screen {
-    width: 240px;
+    width: 300px;
+    height: 620px;
     background: #F4F6F8 !important;
     border-radius: 32px;
     overflow: hidden;
     font-family: var(--sans);
+    position: relative;
   }
   .phone-status {
     background: #FFFFFF !important; height: 44px;
@@ -373,47 +375,432 @@
 <!-- ── App Preview ──────────────────────────────────────────────────────────── -->
 <section style="padding: 80px 0; background: #F7F7F5; border-bottom: 1px solid #E0E0E0;">
   <div class="container-wide">
+    <div style="text-align:center; margin-bottom: 32px;">
+      <p style="margin:0 0 8px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:#3DBE7A;">Live Prototype</p>
+      <h2 style="margin:0; font-family:'DM Serif Display',Georgia,serif; font-size:32px; color:#111111;">Try it yourself</h2>
+      <p style="margin:8px 0 0; font-size:15px; color:#666666;">Tap through the app below. This is the real thing.</p>
+    </div>
     <div class="app-mock reveal">
       <div class="phone-shell">
-        <div class="phone-screen">
-          <div class="phone-status">
-            <span>9:41</span>
-            <span>●●●</span>
-          </div>
-          <div class="phone-content">
-            <div class="pc-label">Greek Orthodox</div>
-            <div class="pc-title">Νηστεία ☦</div>
-            <div class="pc-day-strip">
-              <div class="pc-day-pill inactive">🌴 Palm</div>
-              <div class="pc-day-pill inactive">✝ Mon</div>
-              <div class="pc-day-pill active">🕯 Fri</div>
-              <div class="pc-day-pill inactive">🥚 Sat</div>
-            </div>
-            <div class="pc-card">
-              <div class="pc-card-title">Good Friday</div>
-              <div class="pc-card-sub">Apr 18 · Strictest fast of the year</div>
-              <div class="pc-grid">
-                <div class="pc-rule no"><div class="pc-rule-icon">🥩</div><div class="pc-rule-label">Meat</div><div class="pc-rule-status">✗ No</div></div>
-                <div class="pc-rule no"><div class="pc-rule-icon">🧀</div><div class="pc-rule-label">Dairy</div><div class="pc-rule-status">✗ No</div></div>
-                <div class="pc-rule no"><div class="pc-rule-icon">🐟</div><div class="pc-rule-label">Fish</div><div class="pc-rule-status">✗ No</div></div>
-                <div class="pc-rule no"><div class="pc-rule-icon">🫒</div><div class="pc-rule-label">Oil</div><div class="pc-rule-status">✗ No</div></div>
-                <div class="pc-rule no"><div class="pc-rule-icon">🍷</div><div class="pc-rule-label">Wine</div><div class="pc-rule-status">✗ No</div></div>
-                <div class="pc-rule ok"><div class="pc-rule-icon">🫘</div><div class="pc-rule-label">Beans</div><div class="pc-rule-status">✓ OK</div></div>
-              </div>
-              <div class="pc-scan-btn">📷 Scan a Product</div>
-            </div>
-          </div>
-          <div class="phone-nav">
-            <div class="nav-tab active"><span class="nav-tab-icon">☀️</span>Today</div>
-            <div class="nav-tab"><span class="nav-tab-icon">📷</span>Scan</div>
-            <div class="nav-tab"><span class="nav-tab-icon">🍽️</span>Recipes</div>
-            <div class="nav-tab"><span class="nav-tab-icon">📖</span>Guide</div>
-          </div>
+        <div class="phone-screen" style="width:300px; height:620px; border-radius:32px; overflow:hidden; position:relative;">
+          <div id="nisteia-app" style="width:100%; height:100%; overflow-y:auto; background:#F4F6F8; font-family:'DM Sans',sans-serif;"></div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+(function() {
+
+const G = {
+  green:"#3DBE7A", red:"#E85454", orange:"#F5A623",
+  navy:"#1A1A2E", gray:"#888", light:"#F4F6F8", white:"#fff"
+};
+
+const DAYS = [
+  { name:"Palm Sunday",   date:"Apr 13", icon:"🌴", fish:true,  oil:true,  wine:true,  tip:"Fish is allowed today. Oil and wine are also permitted.", storyTitle:"The Entry into Jerusalem", story:"Palm Sunday marks the day Jesus entered Jerusalem welcomed by crowds waving palm branches crying Hosanna. It is a day of great joy but also the beginning of the most solemn week of the year. Fish is allowed today in celebration — one of only two days in Holy Week where it is permitted." },
+  { name:"Holy Monday",   date:"Apr 14", icon:"✝️",  fish:false, oil:false, wine:false, tip:"Strict fast today. No oil or wine. Keep meals simple.", storyTitle:"The Barren Fig Tree", story:"Holy Monday remembers the cursing of the barren fig tree by Jesus — a symbol of spiritual fruitlessness — and the cleansing of the Temple. We fast strictly today as we begin our journey toward the Cross." },
+  { name:"Holy Tuesday",  date:"Apr 15", icon:"✝️",  fish:false, oil:false, wine:false, tip:"Strict fast continues. Lentil soup or beans are perfect.", storyTitle:"The Ten Virgins", story:"Holy Tuesday commemorates the parable of the Ten Virgins and the teachings Jesus gave in the Temple. It is a day of reflection — are we spiritually prepared? The strict fast calls us to focus." },
+  { name:"Holy Wednesday",date:"Apr 16", icon:"✝️",  fish:false, oil:false, wine:false, tip:"One of the strictest days. Many eat only bread and water.", storyTitle:"The Anointing and Betrayal", story:"Holy Wednesday remembers the sinful woman who anointed Jesus with perfume — an act of deep love — and Judas who that same night agreed to betray Him for thirty pieces of silver. The contrast is striking." },
+  { name:"Holy Thursday", date:"Apr 17", icon:"🍷",  fish:false, oil:true,  wine:true,  tip:"Oil and wine are permitted in memory of the Last Supper.", storyTitle:"The Last Supper", story:"Holy Thursday is the night of the Last Supper, when Jesus washed the disciples feet and instituted the Eucharist. Oil and wine are allowed today in honour of that sacred meal. Tonight the Church reads the Twelve Gospels of the Passion." },
+  { name:"Good Friday",   date:"Apr 18", icon:"🕯️", fish:false, oil:false, wine:false, tip:"The strictest fast of the year. Many eat nothing until sunset.", storyTitle:"The Crucifixion", story:"Good Friday is the day of the Crucifixion. Jesus was tried, condemned and crucified. The entire Church mourns. This is the most solemn day of the Orthodox year. In the evening the Epitaphios is carried through the streets in procession." },
+  { name:"Holy Saturday", date:"Apr 19", icon:"🥚",  fish:false, oil:false, wine:false, tip:"Fast until midnight. At midnight — Christ is Risen!", storyTitle:"The Resurrection", story:"Holy Saturday is the day Christ lay in the tomb. At midnight a single flame is lit and passed through the congregation. The priest cries Χριστός Ανέστη and the whole church erupts in light and joy. The fast is over. The feast begins." },
+];
+
+const RECIPES = [
+  { name:"Bean Soup",    greek:"Φασολάδα",     emoji:"🫘", time:"45 min", oilOk:true,  fishOk:false, desc:"The national fasting dish. Warm and filling." },
+  { name:"Lentil Soup",  greek:"Φακές",        emoji:"🍲", time:"30 min", oilOk:false, fishOk:false, desc:"No oil needed. Perfect for strict fast days." },
+  { name:"Taramasalata", greek:"Ταραμοσαλάτα", emoji:"🐟", time:"10 min", oilOk:true,  fishOk:true,  desc:"Fish roe dip. Palm Sunday only." },
+  { name:"Sesame Bread", greek:"Λαγάνα",       emoji:"🍞", time:"2 hrs",  oilOk:true,  fishOk:false, desc:"Flat bread for Palm Sunday." },
+  { name:"Spinach Rice", greek:"Σπανακόριζο",  emoji:"🌿", time:"30 min", oilOk:true,  fishOk:false, desc:"Simple, nutritious and delicious." },
+  { name:"Halva",        greek:"Χαλβάς",       emoji:"🍮", time:"20 min", oilOk:false, fishOk:false, desc:"Sweet fasting dessert. No eggs or butter." },
+];
+
+const PREFS = ["Chickpeas","Lentils","Eggplant","Spinach","Tomatoes","Pasta","Rice","Mushrooms","Olives","Tahini","Walnuts","Cauliflower"];
+
+const PRODUCTS = {
+  "DEMO1":{ name:"Vetta Pasta",    brand:"Vetta",    emoji:"🍝", meat:false,dairy:false,fish:false,oil:false },
+  "DEMO2":{ name:"Chicken Stock",  brand:"Maggi",    emoji:"🍗", meat:true, dairy:false,fish:false,oil:false },
+  "9310036009101":{ name:"Baked Beans", brand:"Heinz", emoji:"🫘", meat:false,dairy:false,fish:false,oil:false },
+  "5010477348478":{ name:"Dairy Milk",  brand:"Cadbury",emoji:"🍫", meat:false,dairy:true, fish:false,oil:false },
+};
+
+// State
+let state = { tab:0, dayIdx:5, storyOpen:false, scanInput:"", scanResult:null, scanErr:"", openRecipe:null, openFaq:null, selectedPrefs:[], suggestions:null, loadingSug:false };
+
+function setState(patch) { Object.assign(state, patch); render(); }
+
+function el(tag, attrs, ...children) {
+  const e = document.createElement(tag);
+  if (attrs) Object.entries(attrs).forEach(([k,v]) => {
+    if (k === 'style' && typeof v === 'object') Object.assign(e.style, v);
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), v);
+    else if (k === 'class') e.className = v;
+    else e.setAttribute(k, v);
+  });
+  children.flat().forEach(c => c != null && e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c));
+  return e;
+}
+
+function div(style, ...children) { return el('div', { style }, ...children); }
+function p(style, text) { const e = el('p', { style }); e.textContent = text; return e; }
+function btn(style, text, onClick) { const e = el('button', { style, onclick: onClick }); e.textContent = text; return e; }
+function inp(style, placeholder, value, onInput, onKey) {
+  const e = el('input', { style, placeholder });
+  e.value = value;
+  e.oninput = onInput;
+  e.onkeydown = onKey;
+  return e;
+}
+
+function card(children, extraStyle={}, onClick) {
+  const d = div({ background:G.white, borderRadius:'18px', padding:'18px', boxShadow:'0 2px 14px rgba(0,0,0,0.06)', marginBottom:'12px', ...extraStyle });
+  children.forEach(c => c && d.appendChild(c));
+  if (onClick) d.onclick = onClick;
+  return d;
+}
+
+// ── TODAY ──────────────────────────────────────────────────────────────────
+function renderToday() {
+  const day = DAYS[state.dayIdx];
+  const items = [
+    {label:"Meat",icon:"🥩",ok:false},{label:"Dairy",icon:"🧀",ok:false},
+    {label:"Fish",icon:"🐟",ok:day.fish},{label:"Oil",icon:"🫒",ok:day.oil},{label:"Wine",icon:"🍷",ok:day.wine}
+  ];
+
+  // header
+  const header = div({ background:G.white, padding:'20px 16px 0', borderBottom:'1px solid #F0F0F0', marginBottom:'0' });
+  const titleRow = div({ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'14px' });
+  const titleLeft = div({});
+  const eyebrow = p({ margin:'0 0 2px', fontSize:'10px', color:G.gray, fontWeight:'700', textTransform:'uppercase', letterSpacing:'.1em' }, 'Greek Orthodox');
+  const title = p({ margin:'0', fontSize:'22px', fontWeight:'800', color:G.navy }, 'Νηστεία ☦');
+  titleLeft.appendChild(eyebrow); titleLeft.appendChild(title);
+  const scanBtn = btn({ background:G.green, border:'none', borderRadius:'12px', padding:'9px 14px', color:G.white, fontWeight:'800', fontSize:'12px', cursor:'pointer' }, '📷 Scan', () => setState({ tab:1 }));
+  titleRow.appendChild(titleLeft); titleRow.appendChild(scanBtn);
+
+  const strip = div({ display:'flex', gap:'6px', overflowX:'auto', paddingBottom:'14px', scrollbarWidth:'none' });
+  DAYS.forEach((d,i) => {
+    const pill = btn({
+      flexShrink:'0', padding:'7px 12px', borderRadius:'50px',
+      border: state.dayIdx===i ? 'none' : '2px solid #EBEBEB',
+      background: state.dayIdx===i ? G.navy : G.white,
+      color: state.dayIdx===i ? G.white : G.gray,
+      fontWeight:'700', fontSize:'12px', cursor:'pointer', whiteSpace:'nowrap',
+    }, `${d.icon} ${d.name.split(' ')[0]} ${d.name.split(' ')[1]||''}`, () => setState({ dayIdx:i, storyOpen:false }));
+    strip.appendChild(pill);
+  });
+
+  header.appendChild(titleRow); header.appendChild(strip);
+
+  const body = div({ padding:'14px 16px 0' });
+
+  // day card
+  const dayCard = card([
+    div({ display:'flex', alignItems:'center', gap:'12px', marginBottom:'12px' }, [
+      div({ width:'48px', height:'48px', borderRadius:'16px', background:G.light, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'24px', flexShrink:'0', textAlign:'center', lineHeight:'48px' }, day.icon),
+      (() => { const d2=div({}); d2.appendChild(p({margin:'0',fontSize:'17px',fontWeight:'800',color:G.navy},day.name)); d2.appendChild(p({margin:'3px 0 0',fontSize:'12px',color:G.gray},day.date)); return d2; })()
+    ]),
+    (() => { const tipDiv=div({background:'#F0FAF5',borderRadius:'12px',padding:'10px 12px',marginBottom:'14px'}); tipDiv.appendChild(p({margin:'0',fontSize:'13px',color:'#2D7A55',lineHeight:'1.6',fontWeight:'500'},'💬 '+day.tip)); return tipDiv; })(),
+    p({margin:'0 0 8px',fontSize:'10px',fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em',color:G.gray},'Today'),
+    (() => {
+      const grid=div({display:'flex',gap:'6px'});
+      items.forEach(item => {
+        const cell=div({flex:'1',background:item.ok?'#F0FAF5':'#FEF2F2',borderRadius:'12px',padding:'10px 4px',textAlign:'center'});
+        cell.appendChild(p({margin:'0',fontSize:'20px'},item.icon));
+        cell.appendChild(p({margin:'2px 0 1px',fontSize:'10px',color:G.gray,fontWeight:'600'},item.label));
+        cell.appendChild(p({margin:'0',fontSize:'11px',fontWeight:'800',color:item.ok?G.green:G.red},item.ok?'OK':'No'));
+        grid.appendChild(cell);
+      });
+      return grid;
+    })()
+  ]);
+  body.appendChild(dayCard);
+
+  // story card
+  const storyCard = card([
+    div({display:'flex',alignItems:'center',gap:'12px'}, [
+      div({width:'42px',height:'42px',borderRadius:'12px',background:'#FFF8E7',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',flexShrink:'0',textAlign:'center',lineHeight:'42px'},'📜'),
+      (() => { const d2=div({flex:'1'}); d2.appendChild(p({margin:'0',fontSize:'10px',fontWeight:'700',textTransform:'uppercase',letterSpacing:'.08em',color:G.orange},'Story behind today')); d2.appendChild(p({margin:'2px 0 0',fontSize:'14px',fontWeight:'700',color:G.navy},day.storyTitle)); return d2; })(),
+      p({fontSize:'16px',color:G.orange,margin:'0',flexShrink:'0'},state.storyOpen?'▲':'▼')
+    ]),
+    ...(state.storyOpen ? [(() => { const d2=div({borderTop:'1px solid #F0F0F0',marginTop:'12px',paddingTop:'12px'}); d2.appendChild(p({margin:'0',fontSize:'13px',color:'#444',lineHeight:'1.7'},day.story)); return d2; })()] : [])
+  ], { cursor:'pointer' }, () => setState({ storyOpen:!state.storyOpen }));
+  body.appendChild(storyCard);
+
+  // scan CTA
+  const scanCTA = btn({ width:'100%', padding:'16px', borderRadius:'16px', border:'none', background:G.green, color:G.white, fontWeight:'800', fontSize:'15px', cursor:'pointer', display:'block', marginBottom:'10px', boxShadow:`0 4px 14px ${G.green}44` }, '📷 Scan a Product', () => setState({ tab:1 }));
+  body.appendChild(scanCTA);
+
+  const recipeShortcut = card([
+    div({display:'flex',alignItems:'center',gap:'12px'},[
+      p({margin:'0',fontSize:'26px'},'🍽️'),
+      (() => { const d2=div({flex:'1'}); d2.appendChild(p({margin:'0',fontSize:'14px',fontWeight:'800',color:G.navy},'What should I cook?')); d2.appendChild(p({margin:'2px 0 0',fontSize:'12px',color:G.gray},'Recipes for today')); return d2; })(),
+      p({margin:'0',fontSize:'18px',color:G.green},'→')
+    ])
+  ], { cursor:'pointer', marginBottom:'8px' }, () => setState({ tab:2 }));
+  body.appendChild(recipeShortcut);
+
+  const forYouShortcut = card([
+    div({display:'flex',alignItems:'center',gap:'12px'},[
+      p({margin:'0',fontSize:'26px'},'✨'),
+      (() => { const d2=div({flex:'1'}); d2.appendChild(p({margin:'0',fontSize:'14px',fontWeight:'800',color:G.navy},'Personalised suggestions')); d2.appendChild(p({margin:'2px 0 0',fontSize:'12px',color:G.gray},'Meals built for you')); return d2; })(),
+      p({margin:'0',fontSize:'18px',color:G.green},'→')
+    ])
+  ], { cursor:'pointer' }, () => setState({ tab:4 }));
+  body.appendChild(forYouShortcut);
+
+  const wrap = div({ height:'100%', overflowY:'auto', paddingBottom:'80px' });
+  wrap.appendChild(header); wrap.appendChild(body);
+  return wrap;
+}
+
+// ── SCAN ──────────────────────────────────────────────────────────────────
+function renderScan() {
+  const day = DAYS[state.dayIdx];
+  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'Checking for'));
+  wrap.appendChild(p({margin:'0 0 18px',fontSize:'22px',fontWeight:'800',color:G.navy},day.name));
+
+  function doLookup() {
+    const key = state.scanInput.trim().toUpperCase();
+    const prod = PRODUCTS[key] || PRODUCTS[state.scanInput.trim()];
+    if (!key) { setState({ scanErr:'Enter a barcode.', scanResult:null }); return; }
+    if (!prod) { setState({ scanErr:'Not found. Try DEMO1, DEMO2, or 9310036009101', scanResult:null }); return; }
+    const issues=[];
+    if(prod.meat) issues.push({label:'Meat',icon:'🥩'});
+    if(prod.dairy) issues.push({label:'Dairy',icon:'🧀'});
+    if(prod.fish&&!day.fish) issues.push({label:'Fish',icon:'🐟'});
+    if(prod.oil&&!day.oil) issues.push({label:'Oil',icon:'🫒'});
+    const pct=Math.round(((4-issues.length)/4)*100);
+    setState({ scanResult:{...prod,issues,pct,ok:issues.length===0}, scanErr:'' });
+  }
+
+  const inputRow = div({ display:'flex', gap:'8px', marginBottom:'12px' });
+  const input = inp({ flex:'1', padding:'12px 14px', borderRadius:'12px', border:'2px solid #EBEBEB', fontSize:'14px', color:G.navy, outline:'none' }, 'DEMO1, DEMO2...', state.scanInput, e => { state.scanInput=e.target.value; }, e => { if(e.key==='Enter') doLookup(); });
+  const checkBtn = btn({ padding:'12px 16px', borderRadius:'12px', border:'none', background:G.green, color:G.white, fontWeight:'800', fontSize:'14px', cursor:'pointer' }, 'Check', doLookup);
+  inputRow.appendChild(input); inputRow.appendChild(checkBtn);
+  wrap.appendChild(inputRow);
+
+  wrap.appendChild(p({margin:'0 0 8px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.08em'},'Try these'));
+  Object.entries(PRODUCTS).slice(0,4).forEach(([code,prod]) => {
+    const row = card([
+      div({display:'flex',alignItems:'center',gap:'12px'},[
+        p({margin:'0',fontSize:'22px'},prod.emoji),
+        (() => { const d2=div({}); d2.appendChild(p({margin:'0',fontSize:'13px',fontWeight:'700',color:G.navy},prod.name)); d2.appendChild(p({margin:'1px 0 0',fontSize:'11px',color:G.gray},prod.brand+' · '+code)); return d2; })()
+      ])
+    ], { cursor:'pointer', marginBottom:'8px' }, () => { state.scanInput=code; state.scanResult=null; state.scanErr=''; render(); });
+    wrap.appendChild(row);
+  });
+
+  if (state.scanErr) {
+    const errDiv = div({ background:'#FEF2F2', borderRadius:'12px', padding:'12px 14px', color:G.red, fontSize:'13px', fontWeight:'600', marginBottom:'12px' });
+    errDiv.textContent = '⚠️ ' + state.scanErr;
+    wrap.appendChild(errDiv);
+  }
+
+  if (state.scanResult) {
+    const r = state.scanResult;
+    const resCard = div({ background:G.white, borderRadius:'18px', overflow:'hidden', boxShadow:'0 2px 14px rgba(0,0,0,0.06)', marginTop:'4px' });
+    const band = div({ height:'6px', background: r.ok ? G.green : G.red });
+    const inner = div({ padding:'18px' });
+    inner.appendChild(div({display:'flex',alignItems:'center',gap:'12px',marginBottom:'14px'},[
+      div({width:'50px',height:'50px',borderRadius:'16px',background:G.light,textAlign:'center',lineHeight:'50px',fontSize:'26px',flexShrink:'0'},r.emoji),
+      (() => { const d2=div({flex:'1'}); d2.appendChild(p({margin:'0',fontSize:'12px',color:G.gray,fontWeight:'600'},r.brand)); d2.appendChild(p({margin:'2px 0 0',fontSize:'16px',fontWeight:'800',color:G.navy},r.name)); return d2; })()
+    ]));
+    const verdict = div({ background:r.ok?'#F0FAF5':'#FEF2F2', borderRadius:'12px', padding:'14px', textAlign:'center', marginBottom:'12px' });
+    verdict.appendChild(p({margin:'0 0 6px',fontSize:'30px'},r.ok?'✅':'🚫'));
+    verdict.appendChild(p({margin:'0',fontSize:'16px',fontWeight:'800',color:r.ok?G.green:G.red},r.ok?'You can eat this!':'Avoid this today'));
+    inner.appendChild(verdict);
+    if(r.issues.length>0) {
+      inner.appendChild(p({margin:'0 0 8px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.08em'},'Why not?'));
+      r.issues.forEach(iss => {
+        const row=div({display:'flex',alignItems:'center',gap:'10px',padding:'10px 0',borderBottom:'1px solid #F4F4F4'});
+        row.appendChild(p({margin:'0',fontSize:'20px'},iss.icon));
+        row.appendChild(p({margin:'0',fontSize:'13px',color:'#444',fontWeight:'600',flex:'1'},'Contains '+iss.label));
+        row.appendChild(p({margin:'0',fontSize:'12px',color:G.red,fontWeight:'700'},'Not today'));
+        inner.appendChild(row);
+      });
+    }
+    resCard.appendChild(band); resCard.appendChild(inner);
+    wrap.appendChild(resCard);
+  }
+
+  return wrap;
+}
+
+// ── RECIPES ──────────────────────────────────────────────────────────────
+function renderRecipes() {
+  const day = DAYS[state.dayIdx];
+  const suitable = RECIPES.filter(r => (!r.fishOk||day.fish)&&(!r.oilOk||day.oil));
+  const other = RECIPES.filter(r => !suitable.includes(r));
+  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'Fasting'));
+  wrap.appendChild(p({margin:'0 0 6px',fontSize:'22px',fontWeight:'800',color:G.navy},'Recipes'));
+  wrap.appendChild(p({margin:'0 0 18px',fontSize:'13px',color:G.gray},'Tap a recipe to expand it.'));
+
+  function makeRecipeCard(rec, faded) {
+    const isOpen = state.openRecipe === rec.name;
+    const outer = div({ opacity: faded?'0.4':'1', pointerEvents: faded?'none':'auto' });
+    const c = card([
+      div({display:'flex',alignItems:'center',gap:'12px'},[
+        div({width:'48px',height:'48px',borderRadius:'14px',background:'#F0FAF5',textAlign:'center',lineHeight:'48px',fontSize:'24px',flexShrink:'0'},rec.emoji),
+        (() => { const d2=div({flex:'1'}); d2.appendChild(p({margin:'0',fontSize:'14px',fontWeight:'800',color:G.navy},rec.name)); d2.appendChild(p({margin:'2px 0 0',fontSize:'11px',color:G.gray,fontStyle:'italic'},rec.greek+' · '+rec.time)); d2.appendChild(p({margin:'4px 0 0',fontSize:'12px',color:'#555'},rec.desc)); return d2; })(),
+        p({margin:'0',fontSize:'16px',color:G.green,flexShrink:'0'},isOpen?'▲':'▼')
+      ]),
+      ...(isOpen ? [(() => { const d2=div({borderTop:'1px solid #F0F0F0',marginTop:'12px',paddingTop:'12px'}); d2.appendChild(p({margin:'0 0 8px',fontSize:'10px',fontWeight:'700',textTransform:'uppercase',letterSpacing:'.08em',color:G.green},'How to make it')); ['Boil or prepare main ingredient.','Add aromatics and seasoning.','Simmer until cooked through.','Finish with lemon and serve hot.'].forEach((step,j) => { const row=div({display:'flex',gap:'10px',marginBottom:'10px'}); const num=div({width:'24px',height:'24px',borderRadius:'12px',background:G.green,color:G.white,textAlign:'center',lineHeight:'24px',fontSize:'12px',fontWeight:'800',flexShrink:'0'},String(j+1)); row.appendChild(num); row.appendChild(p({margin:'0',fontSize:'12px',color:'#333',lineHeight:'1.6',paddingTop:'3px'},step)); d2.appendChild(row); }); return d2; })()] : [])
+    ], { cursor:'pointer', marginBottom:'8px' }, () => setState({ openRecipe: isOpen?null:rec.name }));
+    outer.appendChild(c); return outer;
+  }
+
+  if(suitable.length>0) {
+    const hrow=div({display:'flex',alignItems:'center',gap:'8px',marginBottom:'12px'});
+    hrow.appendChild(div({width:'8px',height:'8px',borderRadius:'4px',background:G.green,flexShrink:'0'}));
+    hrow.appendChild(p({margin:'0',fontSize:'14px',fontWeight:'800',color:G.navy},'Good for today'));
+    wrap.appendChild(hrow);
+    suitable.forEach(r => wrap.appendChild(makeRecipeCard(r,false)));
+  }
+  if(other.length>0) {
+    const hrow=div({display:'flex',alignItems:'center',gap:'8px',margin:'16px 0 12px'});
+    hrow.appendChild(div({width:'8px',height:'8px',borderRadius:'4px',background:G.orange,flexShrink:'0'}));
+    hrow.appendChild(p({margin:'0',fontSize:'14px',fontWeight:'800',color:G.navy},'Not today'));
+    wrap.appendChild(hrow);
+    other.forEach(r => wrap.appendChild(makeRecipeCard(r,true)));
+  }
+  return wrap;
+}
+
+// ── GUIDE ─────────────────────────────────────────────────────────────────
+function renderGuide() {
+  const faqs = [
+    {q:'What is Orthodox fasting?',a:'Fasting (νηστεία) is a spiritual practice of abstaining from certain foods to focus on prayer and God. During Holy Week we fast from meat, dairy, and depending on the day, oil, wine and fish.'},
+    {q:'Do I have to be perfect?',a:'No. Do what you can and build from there. Even partial fasting is meaningful. Speak to your priest for personal guidance.'},
+    {q:'What can I eat?',a:'Fruit, vegetables, legumes, bread, pasta, rice and nuts. On Palm Sunday fish is also allowed.'},
+    {q:'What about coffee?',a:'Generally fine. Just avoid milk. Black coffee and herbal teas are always safe.'},
+    {q:'Why is Good Friday the hardest?',a:'It is the day of the Crucifixion. Many Orthodox Christians eat nothing until sunset as a mark of mourning and reverence.'},
+    {q:'When does the fast end?',a:'At midnight on Holy Saturday when the priest cries Χριστός Ανέστη — Christ is Risen. The feast begins.'},
+  ];
+  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'New to fasting?'));
+  wrap.appendChild(p({margin:'0 0 18px',fontSize:'22px',fontWeight:'800',color:G.navy},'Your Guide ☦️'));
+  faqs.forEach((faq,i) => {
+    const isOpen = state.openFaq === i;
+    const c = card([
+      div({display:'flex',alignItems:'center',gap:'10px'},[
+        (() => { const t=document.createElement('p'); t.style.cssText='margin:0;flex:1;font-size:14px;font-weight:700;color:#1A1A2E;line-height:1.4'; t.textContent=faq.q; return t; })(),
+        p({margin:'0',fontSize:'16px',color:G.green,flexShrink:'0'},isOpen?'▲':'▼')
+      ]),
+      ...(isOpen ? [(() => { const d2=div({borderTop:'1px solid #F0F0F0',marginTop:'12px',paddingTop:'12px'}); d2.appendChild(p({margin:'0',fontSize:'13px',color:'#444',lineHeight:'1.7'},faq.a)); return d2; })()] : [])
+    ], { cursor:'pointer', marginBottom:'8px' }, () => setState({ openFaq: isOpen?null:i }));
+    wrap.appendChild(c);
+  });
+  const note = div({ background:'#F0FAF5', borderRadius:'14px', padding:'14px' });
+  note.appendChild(p({margin:'0',fontSize:'13px',color:'#2D7A55',lineHeight:'1.7',fontWeight:'500'},'☦️ Fasting is a personal journey. Your effort matters more than perfection. Speak with your priest for guidance specific to you.'));
+  wrap.appendChild(note);
+  return wrap;
+}
+
+// ── FOR YOU ───────────────────────────────────────────────────────────────
+function renderForYou() {
+  const day = DAYS[state.dayIdx];
+  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'Personalised for'));
+  wrap.appendChild(p({margin:'0 0 6px',fontSize:'22px',fontWeight:'800',color:G.navy},'For You ✨'));
+  wrap.appendChild(p({margin:'0 0 18px',fontSize:'13px',color:G.gray,lineHeight:'1.6'},'Pick ingredients you enjoy and get meal ideas for '+day.name+'.'));
+
+  wrap.appendChild(p({margin:'0 0 8px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.08em'},'What do you like?'));
+  const prefGrid = div({ display:'flex', flexWrap:'wrap', gap:'8px', marginBottom:'18px' });
+  PREFS.forEach(food => {
+    const sel = state.selectedPrefs.includes(food);
+    const b = btn({ padding:'7px 14px', borderRadius:'50px', border:sel?'none':'2px solid #EBEBEB', background:sel?G.navy:G.white, color:sel?G.white:'#555', fontWeight:'600', fontSize:'12px', cursor:'pointer' }, food, () => {
+      const next = sel ? state.selectedPrefs.filter(f=>f!==food) : [...state.selectedPrefs,food];
+      setState({ selectedPrefs:next, suggestions:null });
+    });
+    prefGrid.appendChild(b);
+  });
+  wrap.appendChild(prefGrid);
+
+  if(state.selectedPrefs.length > 0) {
+    const sugBtn = btn({
+      width:'100%', padding:'16px', borderRadius:'16px', border:'none',
+      background:state.loadingSug?'#AAA':G.green, color:G.white, fontWeight:'800',
+      fontSize:'15px', cursor:state.loadingSug?'not-allowed':'pointer',
+      display:'block', marginBottom:'16px', boxShadow:state.loadingSug?'none':`0 4px 14px ${G.green}44`
+    }, state.loadingSug?'Finding ideas...':`✨ Suggest meals`, async () => {
+      if(state.loadingSug) return;
+      setState({ loadingSug:true, suggestions:null });
+      const rules = `No meat, no dairy. Fish: ${day.fish?'allowed':'not allowed'}. Oil: ${day.oil?'allowed':'not allowed'}.`;
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:800, messages:[{ role:'user', content:`Orthodox fasting today is ${day.name}. Rules: ${rules}. Person likes: ${state.selectedPrefs.join(', ')}. Suggest 3 fasting meals. Return ONLY JSON array: [{"name":"...","desc":"...","emoji":"..."}]` }] })
+        });
+        const data = await res.json();
+        const text = data.content?.[0]?.text || '[]';
+        const parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
+        setState({ suggestions:parsed, loadingSug:false });
+      } catch(e) { setState({ suggestions:[{name:'Try again',desc:'Something went wrong.',emoji:'⚠️'}], loadingSug:false }); }
+    });
+    wrap.appendChild(sugBtn);
+  } else {
+    const hint = div({ background:G.light, borderRadius:'14px', padding:'20px', textAlign:'center', marginBottom:'14px' });
+    hint.appendChild(p({margin:'0 0 8px',fontSize:'28px'},'👆'));
+    hint.appendChild(p({margin:'0',fontSize:'13px',color:G.gray},'Pick at least one ingredient to get suggestions.'));
+    wrap.appendChild(hint);
+  }
+
+  if(state.suggestions) {
+    wrap.appendChild(p({margin:'0 0 10px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.08em'},'Your suggestions'));
+    state.suggestions.forEach(s => {
+      const c = card([
+        div({display:'flex',gap:'12px',alignItems:'flex-start'},[
+          div({width:'46px',height:'46px',borderRadius:'14px',background:'#F0FAF5',textAlign:'center',lineHeight:'46px',fontSize:'24px',flexShrink:'0'},s.emoji),
+          (() => { const d2=div({}); d2.appendChild(p({margin:'0',fontSize:'14px',fontWeight:'800',color:G.navy},s.name)); d2.appendChild(p({margin:'4px 0 0',fontSize:'12px',color:'#555',lineHeight:'1.6'},s.desc)); return d2; })()
+        ])
+      ], { marginBottom:'8px' });
+      wrap.appendChild(c);
+    });
+    const resetBtn = btn({ width:'100%', padding:'12px', borderRadius:'12px', border:`2px solid ${G.green}`, background:'none', color:G.green, fontWeight:'800', fontSize:'13px', cursor:'pointer' }, 'Try different ingredients', () => setState({ suggestions:null }));
+    wrap.appendChild(resetBtn);
+  }
+
+  return wrap;
+}
+
+// ── TAB BAR ───────────────────────────────────────────────────────────────
+function renderTabBar() {
+  const tabs = [{label:'Today',icon:'☀️'},{label:'Scan',icon:'📷'},{label:'Recipes',icon:'🍽️'},{label:'Guide',icon:'📖'},{label:'For You',icon:'✨'}];
+  const bar = div({ position:'absolute', bottom:'0', left:'0', right:'0', background:G.white, borderTop:'1px solid #F0F0F0', display:'flex', padding:'6px 0 10px', zIndex:'100', boxShadow:'0 -2px 10px rgba(0,0,0,0.06)' });
+  tabs.forEach((t,i) => {
+    const b = btn({ flex:'1', border:'none', background:'none', cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:'3px', padding:'2px 0' }, '', () => setState({ tab:i }));
+    b.appendChild(p({margin:'0',fontSize:'18px'},t.icon));
+    b.appendChild(p({margin:'0',fontSize:'9px',fontWeight:state.tab===i?'800':'600',color:state.tab===i?G.green:'#C0C0C0'},t.label));
+    if(state.tab===i) { const dot=div({width:'16px',height:'2px',borderRadius:'2px',background:G.green,margin:'0 auto'}); b.appendChild(dot); }
+    bar.appendChild(b);
+  });
+  return bar;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function render() {
+  const app = document.getElementById('nisteia-app');
+  if (!app) return;
+  app.innerHTML = '';
+  app.style.position = 'relative';
+  app.style.overflowY = 'auto';
+  app.style.height = '100%';
+
+  const screens = [renderToday, renderScan, renderRecipes, renderGuide, renderForYou];
+  app.appendChild(screens[state.tab]());
+  app.appendChild(renderTabBar());
+}
+
+// Boot
+document.addEventListener('DOMContentLoaded', render);
+setTimeout(render, 100);
+
+})();
+</script>
 
 <!-- ── Problem ──────────────────────────────────────────────────────────────── -->
 <section id="problem">
