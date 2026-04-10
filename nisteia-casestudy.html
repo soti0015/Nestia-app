@@ -221,11 +221,11 @@
   .app-mock {
     background: linear-gradient(135deg, #F0FAF5 0%, #E8F4FF 100%);
     border-radius: 24px;
-    padding: 48px 20px;
+    padding: 40px 16px;
     text-align: center;
     margin: 48px auto;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -238,30 +238,33 @@
     pointer-events: none;
   }
   .phone-shell {
-    display: inline-block;
+    display: block;
     background: #1A1A2E !important;
     border-radius: 44px;
     padding: 14px;
     box-shadow: 0 40px 80px rgba(0,0,0,.25), 0 8px 16px rgba(0,0,0,.12);
     position: relative;
     z-index: 1;
-    transform-origin: top center;
+    transform-origin: center center;
+    flex-shrink: 0;
   }
   .phone-screen {
-    width: 300px;
-    height: 620px;
+    width: 270px;
+    height: 560px;
     background: #F4F6F8 !important;
     border-radius: 32px;
     overflow: hidden;
     font-family: var(--sans);
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
-  @media (max-width: 480px) {
-    .app-mock { padding: 32px 12px; border-radius: 16px; }
-    .phone-shell { transform: scale(0.82); margin: -40px auto; }
+  @media (max-width: 540px) {
+    .phone-shell { transform: scale(0.78); margin: -52px; }
+    .app-mock { padding: 28px 12px; }
   }
-  @media (max-width: 380px) {
-    .phone-shell { transform: scale(0.72); margin: -60px auto; }
+  @media (max-width: 400px) {
+    .phone-shell { transform: scale(0.66); margin: -76px; }
   }
   .phone-status {
     background: #FFFFFF !important; height: 44px;
@@ -394,8 +397,8 @@
     </div>
     <div class="app-mock reveal">
       <div class="phone-shell">
-        <div class="phone-screen" style="width:300px; height:620px; border-radius:32px; overflow:hidden; position:relative;">
-          <div id="nisteia-app" style="width:100%; height:100%; overflow-y:auto; background:#F4F6F8; font-family:'DM Sans',sans-serif;"></div>
+        <div class="phone-screen" style="width:270px; height:560px; border-radius:32px; overflow:hidden; position:relative; display:flex; flex-direction:column;">
+          <div id="nisteia-app" style="width:100%; height:100%; display:flex; flex-direction:column; background:#F4F6F8; font-family:'DM Sans',sans-serif; position:relative; overflow:hidden;"></div>
         </div>
       </div>
     </div>
@@ -562,7 +565,7 @@ function renderToday() {
   ], { cursor:'pointer' }, () => setState({ tab:4 }));
   body.appendChild(forYouShortcut);
 
-  const wrap = div({ height:'100%', overflowY:'auto', paddingBottom:'80px' });
+  const wrap = div({ height:'100%', overflowY:'auto', paddingBottom:'16px' });
   wrap.appendChild(header); wrap.appendChild(body);
   return wrap;
 }
@@ -570,7 +573,7 @@ function renderToday() {
 // ── SCAN ──────────────────────────────────────────────────────────────────
 function renderScan() {
   const day = DAYS[state.dayIdx];
-  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  const wrap = div({ padding:'20px 16px', paddingBottom:'16px' });
   wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'Checking for'));
   wrap.appendChild(p({margin:'0 0 18px',fontSize:'22px',fontWeight:'800',color:G.navy},day.name));
 
@@ -646,7 +649,7 @@ function renderRecipes() {
   const day = DAYS[state.dayIdx];
   const suitable = RECIPES.filter(r => (!r.fishOk||day.fish)&&(!r.oilOk||day.oil));
   const other = RECIPES.filter(r => !suitable.includes(r));
-  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  const wrap = div({ padding:'20px 16px', paddingBottom:'16px' });
   wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'Fasting'));
   wrap.appendChild(p({margin:'0 0 6px',fontSize:'22px',fontWeight:'800',color:G.navy},'Recipes'));
   wrap.appendChild(p({margin:'0 0 18px',fontSize:'13px',color:G.gray},'Tap a recipe to expand it.'));
@@ -692,7 +695,7 @@ function renderGuide() {
     {q:'Why is Good Friday the hardest?',a:'It is the day of the Crucifixion. Many Orthodox Christians eat nothing until sunset as a mark of mourning and reverence.'},
     {q:'When does the fast end?',a:'At midnight on Holy Saturday when the priest cries Χριστός Ανέστη — Christ is Risen. The feast begins.'},
   ];
-  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  const wrap = div({ padding:'20px 16px', paddingBottom:'16px' });
   wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'New to fasting?'));
   wrap.appendChild(p({margin:'0 0 18px',fontSize:'22px',fontWeight:'800',color:G.navy},'Your Guide ☦️'));
   faqs.forEach((faq,i) => {
@@ -715,7 +718,7 @@ function renderGuide() {
 // ── FOR YOU ───────────────────────────────────────────────────────────────
 function renderForYou() {
   const day = DAYS[state.dayIdx];
-  const wrap = div({ padding:'20px 16px', paddingBottom:'80px' });
+  const wrap = div({ padding:'20px 16px', paddingBottom:'16px' });
   wrap.appendChild(p({margin:'0 0 2px',fontSize:'10px',color:G.gray,fontWeight:'700',textTransform:'uppercase',letterSpacing:'.1em'},'Personalised for'));
   wrap.appendChild(p({margin:'0 0 6px',fontSize:'22px',fontWeight:'800',color:G.navy},'For You ✨'));
   wrap.appendChild(p({margin:'0 0 18px',fontSize:'13px',color:G.gray,lineHeight:'1.6'},'Pick ingredients you enjoy and get meal ideas for '+day.name+'.'));
@@ -782,7 +785,7 @@ function renderForYou() {
 // ── TAB BAR ───────────────────────────────────────────────────────────────
 function renderTabBar() {
   const tabs = [{label:'Today',icon:'☀️'},{label:'Scan',icon:'📷'},{label:'Recipes',icon:'🍽️'},{label:'Guide',icon:'📖'},{label:'For You',icon:'✨'}];
-  const bar = div({ position:'absolute', bottom:'0', left:'0', right:'0', background:G.white, borderTop:'1px solid #F0F0F0', display:'flex', padding:'6px 0 10px', zIndex:'100', boxShadow:'0 -2px 10px rgba(0,0,0,0.06)' });
+  const bar = div({ display:'flex', width:'100%' });
   tabs.forEach((t,i) => {
     const b = btn({ flex:'1', border:'none', background:'none', cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:'3px', padding:'2px 0' }, '', () => setState({ tab:i }));
     b.appendChild(p({margin:'0',fontSize:'18px'},t.icon));
@@ -798,13 +801,24 @@ function render() {
   const app = document.getElementById('nisteia-app');
   if (!app) return;
   app.innerHTML = '';
-  app.style.position = 'relative';
-  app.style.overflowY = 'auto';
+  app.style.display = 'flex';
+  app.style.flexDirection = 'column';
   app.style.height = '100%';
+  app.style.position = 'relative';
+
+  // Scrollable content area
+  const content = document.createElement('div');
+  content.style.cssText = 'flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;';
 
   const screens = [renderToday, renderScan, renderRecipes, renderGuide, renderForYou];
-  app.appendChild(screens[state.tab]());
-  app.appendChild(renderTabBar());
+  content.appendChild(screens[state.tab]());
+
+  // Fixed tab bar at bottom
+  const tabBar = renderTabBar();
+  tabBar.style.cssText = 'flex-shrink:0; background:#fff; border-top:1px solid #F0F0F0; display:flex; padding:6px 0 10px; box-shadow:0 -2px 10px rgba(0,0,0,0.06);';
+
+  app.appendChild(content);
+  app.appendChild(tabBar);
 }
 
 // Boot
