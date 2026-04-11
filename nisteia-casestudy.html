@@ -370,15 +370,15 @@
       </div>
       <div class="meta-item">
         <div class="meta-label">Status</div>
-        <div class="meta-value">Concept · Pre-development</div>
+        <div class="meta-value">Live · Deployed on Vercel</div>
       </div>
       <div class="meta-item">
         <div class="meta-label">Platform</div>
-        <div class="meta-value">iOS · Android · Web PWA</div>
+        <div class="meta-value">Web PWA · iOS · Android</div>
       </div>
       <div class="meta-item">
         <div class="meta-label">Stack</div>
-        <div class="meta-value">React Native · Next.js · Prisma</div>
+        <div class="meta-value">Next.js · TypeScript · Tailwind</div>
       </div>
       <div class="meta-item">
         <div class="meta-label">Year</div>
@@ -866,7 +866,7 @@ setTimeout(render, 100);
         <div>
           <div class="tab-sub">Tab 1</div>
           <h4>Today</h4>
-          <p>Covers Palm Sunday through to Easter Sunday covering every day of Holy Week. You tap the day and get two things straight away. First, the fasting rules: a simple grid showing what's allowed and what's not. Second, the story behind that day explaining why it is significant, what the Church is commemorating, and what it means spiritually. Not just "no oil today" but the reason you're fasting in the first place. That context is what makes the difference between following rules and actually understanding the tradition.</p>
+          <p>Covers Palm Sunday through to Holy Saturday. You tap the day and get the fasting rules — a grid showing meat, dairy, fish, oil and wine status — alongside the story behind that day. Why it's significant, what the Church is commemorating, and what it means spiritually. The day selector auto-updates based on the real date so you always open to the right day. Shortcuts at the bottom link straight to recipes and personalised suggestions.</p>
         </div>
       </div>
       <div class="tab-block reveal">
@@ -874,7 +874,7 @@ setTimeout(render, 100);
         <div>
           <div class="tab-sub">Tab 2</div>
           <h4>Scan</h4>
-          <p>Scan any product barcode and find out instantly if you can eat it today. It pulls from the Open Food Facts database, which is free and doesn't need an API key. The result is big and obvious: "You can eat this!" or "Avoid this today", with a simple reason if it's not allowed.</p>
+          <p>Powered by Quagga2 — a library specifically built for fast retail barcode detection. Point the camera at any product and the result slides up from the bottom as a sheet, UCART-style, while the camera stays live behind it. A green corner viewfinder and animated scan line show you exactly where to aim. If the product isn't in the Open Food Facts database, an AI fallback activates: you type the product name and Claude checks it against today's fasting rules on the fly. Torch button included for dark aisles.</p>
         </div>
       </div>
       <div class="tab-block reveal">
@@ -882,7 +882,7 @@ setTimeout(render, 100);
         <div>
           <div class="tab-sub">Tab 3</div>
           <h4>Recipes</h4>
-          <p>A collection of traditional Greek fasting recipes. Fasolada, Fakes, Taramasalata, Lagana, Spanakorizo, Halva and more. Each one has the Greek name, how long it takes, difficulty, and numbered steps. The recipes automatically filter to only show what you're allowed to make that day.</p>
+          <p>Six traditional Greek fasting recipes: Fasolada, Fakes, Taramasalata, Lagana, Spanakorizo and Halva. Each one has the Greek name, how long it takes, and numbered steps. Recipes automatically filter to only show what's permitted on the current day. Dishes that are off-limits are still visible but greyed out so you know what's coming on other days.</p>
         </div>
       </div>
       <div class="tab-block reveal">
@@ -890,7 +890,7 @@ setTimeout(render, 100);
         <div>
           <div class="tab-sub">Tab 4</div>
           <h4>Guide</h4>
-          <p>This is for anyone who's never done this before. What is fasting? What can I eat? Do I have to be perfect? Why is Good Friday the hardest day? Simple FAQ cards you tap to open. Warm and straightforward, no assumptions about what you already know.</p>
+          <p>A beginner's FAQ for anyone who has never fasted before. What is Orthodox fasting? Do I have to be perfect? What can I eat? Why is Good Friday the hardest day? When does the fast end? All answered in plain language with no assumptions about what you already know. A rules card at the top summarises what's always avoided and what depends on the day.</p>
         </div>
       </div>
       <div class="tab-block reveal">
@@ -898,7 +898,7 @@ setTimeout(render, 100);
         <div>
           <div class="tab-sub">Tab 5</div>
           <h4>For You</h4>
-          <p>You pick the ingredients and foods you enjoy and the app builds personalised meal and snack ideas around them. It checks what's allowed on today's fasting rules first, then uses AI to put something together that actually suits you. Not just a list of random recipes. Suggestions that feel like they were made for you. Great for people who know what they like but have no idea how to make it work during Holy Week.</p>
+          <p>Pick the ingredients you enjoy from a grid of options. The app checks today's fasting rules and passes everything to Claude, which returns three personalised meal ideas built around your preferences. Not a generic recipe list — suggestions that feel like they were made for you. Ingredient labels switch to Greek when Greek mode is active.</p>
         </div>
       </div>
     </div>
@@ -1017,46 +1017,46 @@ setTimeout(render, 100);
       <div class="feature-card">
         <div class="feature-num">Feature 01</div>
         <h4>Daily fasting rules + day stories</h4>
-        <p>Palm Sunday through to Easter Sunday. Each day has its fasting rules: meat, dairy, fish, oil and wine. Alongside that, the story of why that day is significant in the Orthodox tradition. The rules tell you what you can eat. The story tells you why it matters.</p>
+        <p>Palm Sunday through to Holy Saturday. Each day shows the fasting rules for meat, dairy, fish, oil and wine. Alongside that, the story of why that day is significant in the Orthodox tradition. The day selector auto-detects today's date so you always open to the right day without having to tap anything.</p>
       </div>
       <div class="feature-card">
         <div class="feature-num">Feature 02</div>
-        <h4>Barcode scanner</h4>
-        <p>Scan any product and get an instant yes or no. Powered by the Open Food Facts database, free to use.</p>
+        <h4>Fast barcode scanner with AI fallback</h4>
+        <p>Powered by Quagga2 for instant retail barcode detection. Results slide up from the bottom while the camera stays live. If a product isn't in the Open Food Facts database, an AI fallback lets you type the product name and Claude checks it on the spot. Torch button included.</p>
       </div>
       <div class="feature-card">
         <div class="feature-num">Feature 03</div>
         <h4>Recipe library</h4>
-        <p>Traditional Greek fasting recipes with step-by-step instructions. Only shows what's allowed for the day you've selected.</p>
+        <p>Six traditional Greek fasting recipes with numbered steps. Automatically filters to only show what's allowed on the selected day. Dishes that aren't permitted are still visible but greyed out.</p>
       </div>
       <div class="feature-card">
         <div class="feature-num">Feature 04</div>
         <h4>Beginner's guide</h4>
-        <p>A simple FAQ for first-time fasters. What is fasting? What can I eat? Why is Good Friday the hardest? All answered clearly.</p>
+        <p>A simple FAQ for first-time fasters in plain language. What is fasting? What can I eat? Do I have to be perfect? Why is Good Friday the hardest? All answered without assuming any prior knowledge.</p>
       </div>
       <div class="feature-card">
         <div class="feature-num">Feature 05</div>
-        <h4>Strictness toggle</h4>
-        <p>Not everyone fasts the same way and that's okay. You can choose between lenient, standard and strict to match how you observe.</p>
+        <h4>Greek / English language toggle</h4>
+        <p>One tap switches the entire app between English and Greek. Every screen, every label, every fasting verdict, every recipe name, every FAQ question and answer. Built so older community members can use the app fully in Greek without any friction.</p>
       </div>
       <div class="feature-card">
         <div class="feature-num">Feature 06</div>
-        <h4>Score ring</h4>
-        <p>Each scanned product gets a compliance score from 0 to 100. A quick visual read so you know exactly where it sits.</p>
+        <h4>Personalised AI meal suggestions</h4>
+        <p>Pick your favourite ingredients from a grid. Claude takes those preferences, checks today's fasting rules, and returns three personalised meal ideas. Results also switch to Greek when Greek mode is on.</p>
       </div>
       <div class="feature-card">
         <div class="feature-num">Feature 07</div>
-        <h4>Greek language support</h4>
-        <p>A simple toggle to switch the entire app between English and Greek. Every screen, every label, every fasting verdict switches over. Built so older community members who are more comfortable in Greek can use the app fully without any friction.</p>
+        <h4>UCART-style scan result</h4>
+        <p>The camera stays live while the result slides up from the bottom as a bottom sheet. Big clear verdict — green tick or red cross — with the reason below. Scan Again or Done from the same screen without breaking the flow.</p>
       </div>
       <div class="feature-card">
         <div class="feature-num">Feature 08</div>
-        <h4>Personalised meal suggestions</h4>
-        <p>You tell the app what foods you enjoy and it puts together fasting-friendly meal and snack ideas built around your preferences. It takes into account what's actually allowed on that day, so every suggestion is one you can eat right now. Powered by AI so the results feel personal, not generic.</p>
+        <h4>Χριστός Ανέστη Easter screen</h4>
+        <p>On Easter Sunday the app opens to a full-screen celebration: a flickering candle, the Orthodox cross, Χριστός Ανέστη and Christ is Risen in both languages. Tap to enter the app. A moment that matches the weight of the occasion.</p>
       </div>
     </div>
 
-    <p style="margin-top: 32px; font-size: 14px; color: #888888; font-weight: 500;">Post-MVP ideas: push notifications, offline mode, community recipes, year-round fasting calendar.</p>
+    <p style="margin-top: 32px; font-size: 14px; color: #888888; font-weight: 500;">Built and deployed: Next.js, TypeScript, Tailwind, Vercel, Open Food Facts API, Anthropic Claude API, Quagga2, PWA manifest.</p>
   </div>
 </section>
 
@@ -1064,19 +1064,19 @@ setTimeout(render, 100);
 <section id="tech">
   <div class="container">
     <div class="section-eyebrow reveal">Technical Approach</div>
-    <h2 class="section-title reveal">Built by Aaron, assisted by AI</h2>
-    <p class="body-text reveal">Aaron is building this himself. He'll set up the project, create the files and manage the codebase end to end. AI will come in to help with specific logic, API integration and tricky styling bits, but the goal is to own every decision.</p>
+    <h2 class="section-title reveal">Built and shipped in one Holy Week</h2>
+    <p class="body-text reveal">Aaron built this end to end — project setup, file structure, component architecture, API integration and deployment. The app went from zero to live on Vercel within Holy Week 2025. Every decision was intentional: Next.js over React Native for fast iteration and instant PWA deployment, Quagga2 over other barcode libraries for speed on real supermarket barcodes, a custom language context over i18next to keep full control over translations.</p>
 
     <table class="stack-table reveal">
-      <tr><td>Frontend</td><td>React Native for mobile or Next.js as a PWA. Decision made at project start.</td></tr>
-      <tr><td>Styling</td><td>Tailwind CSS. Utility-first and consistent with existing projects.</td></tr>
-      <tr><td>Database</td><td>PostgreSQL via Prisma ORM. For recipes, user data and scan history.</td></tr>
-      <tr><td>Barcode API</td><td>Open Food Facts. Open source, free, no API key needed, community maintained.</td></tr>
-      <tr><td>Localisation</td><td>i18next. The standard library for multilingual React apps. English and Greek JSON files, language toggled by the user in settings.</td></tr>
-      <tr><td>Meal AI</td><td>Claude API (Anthropic). Takes the user's food preferences and today's fasting rules, returns personalised meal and snack suggestions on the fly.</td></tr>
-      <tr><td>Deployment</td><td>Vercel for web, Expo for mobile.</td></tr>
-      <tr><td>AI Assist</td><td>Claude by Anthropic. Code suggestions, debugging and content help during the build.</td></tr>
-      <tr><td>Auth</td><td>Clerk or NextAuth.js. Post-MVP, for user accounts and saved recipes.</td></tr>
+      <tr><td>Frontend</td><td>Next.js 16 with App Router. TypeScript throughout. Deployed as a PWA so it installs on iPhone and Android directly from the browser.</td></tr>
+      <tr><td>Styling</td><td>Tailwind CSS. Utility-first, consistent with a clean white card design system inspired by Yuka.</td></tr>
+      <tr><td>Barcode scanning</td><td>Quagga2 (@ericblade/quagga2). Chosen over html5-qrcode and zxing for its speed with retail EAN/UPC barcodes. Confidence threshold filtering to avoid false reads.</td></tr>
+      <tr><td>Product database</td><td>Open Food Facts API. Open source, free, no API key required. Covers most Australian supermarket products. AI fallback handles anything not in the database.</td></tr>
+      <tr><td>AI — meal suggestions</td><td>Claude Haiku (Anthropic). Takes the user's food preferences and today's fasting rules and returns three personalised meal ideas as structured JSON.</td></tr>
+      <tr><td>AI — product check</td><td>Claude Haiku (Anthropic). When a barcode isn't found in Open Food Facts, the user types the product name and Claude checks it against today's fasting rules on the fly.</td></tr>
+      <tr><td>Localisation</td><td>Custom React Context. Full EN/GR translations covering every string in the app — UI labels, FAQs, day stories, recipe names and steps, ingredient options, scan results.</td></tr>
+      <tr><td>Deployment</td><td>Vercel. Auto-deploys on every git push to main. Live URL shared with users immediately.</td></tr>
+      <tr><td>PWA</td><td>Web app manifest, apple-touch-icon, theme-color meta tags. Installs to iPhone home screen with the Orthodox cross icon.</td></tr>
     </table>
   </div>
 </section>
@@ -1085,17 +1085,18 @@ setTimeout(render, 100);
 <section id="vision">
   <div class="container">
     <div class="section-eyebrow reveal">Future Vision</div>
-    <h2 class="section-title reveal">Starting with Holy Week, growing with the calendar</h2>
-    <p class="body-text reveal">The plan is to start with Holy Week and grow from there. The Greek Orthodox calendar has fasting periods throughout the whole year and the same core features work for all of them. Barcode scanning, daily rules, recipes. It all applies.</p>
+    <h2 class="section-title reveal">Holy Week is built. The full calendar is next.</h2>
+    <p class="body-text reveal">The Holy Week MVP is live. The barcode scanner works, the AI suggestions work, Greek translations are complete, and the app is installable as a PWA on iPhone. The foundation is solid. Everything from here is expansion — more fasting periods, more content, more community features.</p>
 
     <ul class="styled reveal">
-      <li>Expand to cover the Apostles' Fast, Dormition Fast, Nativity Fast and the regular Wednesday and Friday fasting</li>
-      <li>Full Greek language support so older first-generation community members can use the app entirely in Greek, reviewed by a native speaker for accuracy</li>
-      <li>A community recipe library where people can submit their own family recipes</li>
-      <li>A personal fasting journal to track your observance across the year</li>
+      <li>Apostles' Fast (June 16 – July 11), Dormition Fast (August 1–14), Nativity Fast (November 15 – December 24) — same scanner, same structure, new dates</li>
+      <li>Regular Wednesday and Friday fasting throughout the year</li>
+      <li>Orthodox Easter calculator so the app auto-updates for 2026, 2027 and beyond without manual date changes</li>
+      <li>Native speaker review of all Greek translations for accuracy and natural phrasing</li>
+      <li>Community recipe submissions — people share their family recipes inside the app</li>
+      <li>App Store submission — Apple Developer ($149 AUD/yr), Google Play ($35 USD once)</li>
       <li>Push notifications at the start of each fasting period</li>
-      <li>Potential partnerships with Greek Orthodox parishes and community groups in Australia</li>
-      <li>A lightweight web version for people on desktop or tablet</li>
+      <li>Partnerships with Greek Orthodox parishes and community organisations in Australia</li>
     </ul>
 
     <div class="callout reveal">
@@ -1173,7 +1174,7 @@ setTimeout(render, 100);
 <footer>
   <div class="container">
     <span class="footer-brand">☦ Νηστεία · Orthodox Fasting Companion</span>
-    <span class="footer-credit">Prepared by Aaron Sotiropoulos · 2025 · Concept document</span>
+    <span class="footer-credit">Built by Aaron Sotiropoulos · Holy Week 2025 · Live on Vercel</span>
   </div>
 </footer>
 
